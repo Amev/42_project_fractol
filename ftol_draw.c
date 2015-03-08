@@ -12,20 +12,17 @@
 
 #include "fractol.h"
 
-void				ftol_print_into_img(t_win *env, int x, int y, int color)
+void				ftol_putinimg(t_win *env, int x, int y, int color)
 {
 	int				i;
 
-	if (y >= 0 && x >= 0 && x * 4 + y * env->len < env->h * env->len)
-	{
-		i = x * 4 + y * env->len;
-		env->img_str[i] = (color & 0xFF);
-		env->img_str[i + 1] = (color & 0xFF00) >> 8;
-		env->img_str[i + 2] = (color & 0xFF0000) >> 16;
-	}
+	i = x * 4 + y * env->len;
+	env->img_str[i] = (color & 0xFF);
+	env->img_str[i + 1] = (color & 0xFF00) >> 8;
+	env->img_str[i + 2] = (color & 0xFF0000) >> 16;
 }
 
-int					ftol_index_color(t_win *e, int i)
+int					ftol_idxclr(t_win *e, int i)
 {
 	if (i < 26)
 		return (ft_color_degrade(e->clr.color1, e->clr.color2, i * 4));
@@ -42,50 +39,40 @@ int					ftol_index_color(t_win *e, int i)
 	return (e->clr.color7);
 }
 
-int					ftol_draw_julia(t_win *env)
+int					ftol_dw_rcrs(t_complex *im, int i)
 {
-	int				i;
+	im->z_re = im->n_re;
+	im->z_im = im->n_im;
+	im->n_re = im->z_re * im->z_re - im->z_im * im->z_im + im->c_re;
+	im->n_im = 2 * im->z_re * im->z_im + im->c_im;
+	if (im->n_re * im->n_re + im->n_im * im->n_im > 4)
+		return (i);
+	return (ftol_draw_recurs(im, i + 1));
+}
+
+int					ftol_draw(t_win *e)
+{
 	int				x;
 	int				y;
-	double			z_re;
-	double			z_im;
-	double			n_re;
-	double			n_im;
-	int				color;
+	t_complex		im;
 
 	y = 0;
-	while (y < env->h)
+	im.half_w = e->w / 2;
+	im.half_h = e->h / 2;
+	im.div_w = 1.5 / (0.5 * e->w * e->zoom);
+	im.div_h = 1 / (0.5 * e->h * e->zoom);
+	while (y < e->h)
 	{
 		x = 0;
-		while (x < env->w)
+		while (x < e->w)
 		{
-			i = 0;
-			n_re = 1.5 * (x - env->w / 2) / (0.5 * env->w * env->zoom);
-			n_im = (y - env->h / 2) / (0.5 * env->h * env->zoom);
-			if (env->name == MANDEL)
-			{
-				env->c_re = env->coef_x * n_re;
-				env->c_im = env->coef_y * n_im;
-			}
-			while (i++ < 300)
-			{
-				z_re = n_re;
-				z_im = n_im;
-				n_re = z_re * z_re - z_im * z_im + env->c_re;
-				n_im = 2 * z_re * z_im + env->c_im;
-				if (n_re * n_re + n_im * n_im > 4)
-					break;
-			}
-			color = ftol_index_color(env, i);
-			ftol_print_into_img(env, x++, y, color);
+			im.n_re = (x - im.half_w) * im.div_w;
+			im.n_im = (y - im.half_h) * im.div_h;
+			im->c_re = e->name == MANDEL ? e->coef_x * im.n_re : e->c_re;
+			im->c_im = e->name == MANDEL ? e->coef_y * im.n_im : e->c_im;
+			ftol_putinimg(e, x++, y, ftol_idxclr(e, ftol_dwrcrs(&im, 0)));
 		}
 		y++;
 	}
-	return (1);
-}
-
-int					ftol_draw(t_win *env)
-{
-	ftol_draw_julia(env);
 	return (1);
 }

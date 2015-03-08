@@ -57,6 +57,22 @@ typedef struct		s_color
 }					t_color;
 
 /*
+** structure comlexe
+*/
+
+typedef struct 		s_complex
+{
+	double			z_re;
+	double			z_im;
+	double			n_re;
+	double			n_im;
+	double			div_w;
+	double			div_h;
+	double			half_w;
+	double			half_h;
+}					t_complex;
+
+/*
 ** structure mlx
 */
 
@@ -88,9 +104,9 @@ int					ftol_expose_hook(t_win *e);
 int					ftol_win_param(t_win *env, int av, char **ac);
 int					ftol_fractal_name(t_win *env, char *ac);
 int					ftol_draw(t_win *env);
-int					ftol_draw_julia(t_win *env);
-int					ftol_index_color(t_win *e, int i);
-void				ftol_print_into_img(t_win *env, int x, int y, int color);
+int					ftol_idxclr(t_win *e, int i);
+int					ftol_dw_rcrs(t_complex *im, int i);
+void				ftol_putinimg(t_win *env, int x, int y, int color);
 void				ftol_print_error(int err);
 int					ftol_mouse_hook(int b, int x, int y,  t_win *env);
 int					ftol_mouse_motion(int x, int y, t_win *env);

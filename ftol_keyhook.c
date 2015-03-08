@@ -71,7 +71,7 @@ int					ftol_mouse_motion(int x, int y, t_win *env)
 		env->c_im = (y - env->h / 2) / (0.5 * env->h * env->zoom);
 		env->event = 1;
 	}
-	if (env->motion && env->name == MANDEL)
+	else if (env->motion && env->name == MANDEL)
 	{
 		env->coef_x = (x - env->w / 2) / (0.5 * env->w);
 		env->coef_y = (y - env->h / 2) / (0.5 * env->h);
