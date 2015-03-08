@@ -6,7 +6,7 @@
 #    By: vame <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/10 16:31:28 by vame              #+#    #+#              #
-#    Updated: 2015/02/13 16:04:59 by vame             ###   ########.fr        #
+#    Updated: 2015/03/08 13:03:13 by vame             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRC = ./ft_abs.c ./ft_atoi.c ./ft_bzero.c ./ft_isalnum.c \
 	  ./ft_strcpy.c ./ft_strdel.c ./ft_strdup.c \
 	  ./ft_strequ.c ./ft_striter.c ./ft_striteri.c \
 	  ./ft_strjoin.c ./ft_strlcat.c ./ft_strlen.c \
-	  ./ft_strmap.c ./ft_strmapi.c ./ft_strncat.c \
+	  ./ft_strmap.c ./ft_strmapi.c ./ft_strncat.c ./ft_color_degrade.c \
 	  ./ft_strncmp.c ./ft_strncpy.c ./ft_strnequ.c ./ft_nbrsplit.c \
 	  ./ft_strnew.c ./ft_strnstr.c ./ft_strrchr.c ./ft_strsplit_esc.c \
 	  ./ft_strstr.c ./ft_strsub.c ./ft_lstmap.c ./ft_strlen_c.c\

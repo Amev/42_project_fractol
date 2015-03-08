@@ -6,39 +6,34 @@
 #    By: vame <vame@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/23 11:23:10 by vame              #+#    #+#              #
-#    Updated: 2015/03/04 10:08:55 by vame             ###   ########.fr        #
+#    Updated: 2015/03/08 14:08:08 by vame             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fdf
+NAME = fractol
+
+INC = ./fractol.h
 
 CFLAGS = -Werror -Wextra -Wall -I libft/includes/
 
 LIBX = -lm -L libft/ -lft -L /usr/x11/lib -lmlx -lXext -lX11
 
-INC = ./fdf.h
-
 TMP = $(INC:.h=.h.gch)
 
-SRC =	./fdf_main.c \
-		./fdf_draw.c \
-		./fdf_tools.c \
-		./fdf_window.c \
-		./fdf_expose.c \
-		./fdf_matrix.c \
-		./fdf_filling.c \
-		./fdf_key_hook.c \
-		./fdf_index_alti.c \
-		./fdf_create_map.c \
-		./fdf_matrix_tools.c \
-		./fdf_color_degrade.c
+SRC =	./ftol_main.c \
+		./ftol_draw.c \
+		./ftol_tools.c \
+		./ftol_expose.c \
+		./ftol_window.c \
+		./ftol_keyhook.c
 
 BINAIRE = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(BINAIRE)
+$(NAME): $(BINAIRE) $(INC)
 		@make -C libft/
+		gcc -c $(CFLAGS) $(INC) $(SRC)
 		gcc -g -o $(NAME) $(BINAIRE) $(LIBX)
 		@rm -f $(TMP)
 

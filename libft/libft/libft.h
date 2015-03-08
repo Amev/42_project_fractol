@@ -6,7 +6,7 @@
 /*   By: vame <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/05 17:25:23 by vame              #+#    #+#             */
-/*   Updated: 2015/02/10 13:31:23 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/08 13:02:53 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+int					ft_color_degrade(int clr_a, int clr_b, int index);
 void				ft_putchar(char c);
 void				ft_putstr(char const *s);
 void				*ft_memset(void *b, int c, size_t len);
