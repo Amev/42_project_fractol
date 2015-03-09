@@ -65,7 +65,7 @@ int					ftol_key_hook(int k, t_win *env)
 
 int					ftol_mouse_motion(int x, int y, t_win *env)
 {
-	if (env->motion && env->name == JULIA)
+	if (env->motion && (env->name != MANDEL)
 	{
 		env->c_re = 1.5 * (x - env->w / 2) / (0.5 * env->w * env->zoom);
 		env->c_im = (y - env->h / 2) / (0.5 * env->h * env->zoom);

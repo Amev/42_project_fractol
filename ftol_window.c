@@ -26,6 +26,8 @@ int					ftol_fractal_name(t_win *env, char *ac)
 		env->name = JULIA;
 	if (!ft_strcmp("mandel", ac))
 		env->name = MANDEL;
+	if (!ft_strcmp("ship", ac))
+		env->name = SHIP;
 	if (env->name == 0)
 		ftol_print_error(ERR_NAM);
 	return (1);

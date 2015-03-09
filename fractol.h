@@ -25,6 +25,7 @@
 
 # define JULIA 1
 # define MANDEL 2
+# define SHIP 3
 
 # define ERR_ARG 1
 # define ERR_MAL 2
@@ -62,6 +63,7 @@ typedef struct		s_color
 
 typedef struct 		s_complex
 {
+	int				name; 
 	double			z_re;
 	double			z_im;
 	double			n_re;

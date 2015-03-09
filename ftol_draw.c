@@ -39,15 +39,18 @@ int					ftol_idxclr(t_win *e, int i)
 	return (e->clr.color7);
 }
 
-int					ftol_dw_rcrs(t_complex *im, int i)
+int					ftol_dwrcrs(t_complex *im, int i)
 {
 	im->z_re = im->n_re;
 	im->z_im = im->n_im;
 	im->n_re = im->z_re * im->z_re - im->z_im * im->z_im + im->c_re;
-	im->n_im = 2 * im->z_re * im->z_im + im->c_im;
+	if (im->name == SHIP)
+		im->n_im = 2 * ft_abs_db(im->z_re * im->z_im) + im->c_im;
+	else
+		im->n_im = 2 * im->z_re * im->z_im + im->c_im;
 	if (im->n_re * im->n_re + im->n_im * im->n_im > 4)
 		return (i);
-	return (ftol_draw_recurs(im, i + 1));
+	return (ftol_dwrcus(im, i + 1));
 }
 
 int					ftol_draw(t_win *e)
@@ -57,6 +60,7 @@ int					ftol_draw(t_win *e)
 	t_complex		im;
 
 	y = 0;
+	im.name = e->name;
 	im.half_w = e->w / 2;
 	im.half_h = e->h / 2;
 	im.div_w = 1.5 / (0.5 * e->w * e->zoom);

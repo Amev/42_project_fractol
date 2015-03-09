@@ -25,7 +25,8 @@ void				ftol_print_error(int err)
 	if (err == ERR_NAM)
 	{
 		ft_printf("{red}Bad fractal's name.\n");
-		ft_printf("Please specify a name betwen : {\"julia\"/\"mandel\"}.{eoc}\n");
+		ft_printf("Please specify a name betwen : ");
+		ft_printf("{\"julia\"/\"mandel\"/\"ship\"}.{eoc}\n");
 	}
 	exit(err);
 }
