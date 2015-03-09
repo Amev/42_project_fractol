@@ -12,14 +12,14 @@
 
 #include "fractol.h"
 
-void				ftol_putinimg(t_win *env, int x, int y, int color)
+void				ftol_putinimg(t_win *e, int x, int y, int color)
 {
 	int				i;
 
-	i = x * 4 + y * env->len;
-	env->img_str[i] = (color & 0xFF);
-	env->img_str[i + 1] = (color & 0xFF00) >> 8;
-	env->img_str[i + 2] = (color & 0xFF0000) >> 16;
+	i = x * 4 + y * e->len;
+	e->img_str[i] = (color & 0xFF);
+	e->img_str[i + 1] = (color & 0xFF00) >> 8;
+	e->img_str[i + 2] = (color & 0xFF0000) >> 16;
 }
 
 int					ftol_idxclr(t_win *e, int i)
@@ -64,32 +64,59 @@ int					ftol_dwrcrs(t_complex *im, int i)
 	return (ftol_dwrcrs(im, i + 1));
 }
 
-int					ftol_draw(t_win *e)
+void				*ftol_draw_quarter(s_structure s)
 {
 	int				x;
 	int				y;
 	t_complex		im;
 
-	y = 0;
-	im.esc = e->esc;
-	im.iter = e->iter;
-	im.name = e->name;
-	im.half_w = e->w / 2;
-	im.half_h = e->h / 2;
-	im.div_w = 1.5 / (0.5 * e->w * e->zoom);
-	im.div_h = 1 / (0.5 * e->h * e->zoom);
-	while (y < e->h)
+	y = s.xywh[1];
+	im.esc = s.e->esc;
+	im.iter = s.e->iter;
+	im.name = s.e->name;
+	im.half_w = s.e->w / 2;
+	im.half_h = s.e->h / 2;
+	im.div_w = 1.5 / (0.5 * e->w * s.e->zoom);
+	im.div_h = 1 / (0.5 * e->h * s.e->zoom);
+	while (y < s.xywh[3])
 	{
-		x = 0;
-		while (x < e->w)
+		x = s.xywh[0];
+		while (x < s.xywh[2])
 		{
-			im.n_re = (x - im.half_w) * im.div_w + e->move_x;
-			im.n_im = (y - im.half_h) * im.div_h + e->move_y;
-			im.c_re = e->name != JULIA && e->name != THORN ? im.n_re : e->c_re;
-			im.c_im = e->name != JULIA && e->name != THORN ? im.n_im : e->c_im;
-			ftol_putinimg(e, x++, y, ftol_idxclr(e, ftol_dwrcrs(&im, 0)));
+			im.n_re = (x - im.half_w) * im.div_w + s.e->move_x;
+			im.n_im = (y - im.half_h) * im.div_h + s.e->move_y;
+			im.c_re = s.e->name != JULIA && s.e->name != THORN ? im.n_re : s.e->c_re;
+			im.c_im = s.e->name != JULIA && s.e->name != THORN ? im.n_im : s.e->c_im;
+			ftol_putinimg(s.e, x++, y, ftol_idxclr(s.e, ftol_dwrcrs(&im, 0)));
 		}
 		y++;
 	}
+	pthread_exit(NULL);
+}
+
+int					ftol_draw(t_win *e)
+{
+	int				i;
+	int				rturn[4];
+	pthread_t		thread[4];
+	t_super_struct	s_structure;
+
+	i = 0;
+	s_structure.e = e;
+	while (i < 4)
+	{
+		s_structure.xywh[0] = (i + 1) / 2 * (e->w / 2);
+		s_structure.xywh[1] = i % 2 * (e->h / 2);
+		s_structure.xywh[2] = (1 + (i / 2)) * (e->w / 2);
+		s_structure.xywh[3] = (1 + (i % 2)) * (e->h / 2);
+		if (pthread_create(&thread[i++], NULL, ftol_draw_quarter, s_structure) == -1)
+			ftol_print_error(ERR_THD);
+	}
+	rturn[0] = pthread_join(thread[0], NULL);
+	rturn[1] = pthread_join(thread[1], NULL);
+	rturn[2] = pthread_join(thread[2], NULL);
+	rturn[3] = pthread_join(thread[3], NULL);
+	if (rturn[0] == -1 || rturn[1] == -1 || rturn[2] == -1 || rturn[3] == -1)
+		ftol_print_error(ERR_THD);
 	return (1);
 }

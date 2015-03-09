@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <pthread.h>
 # include <math.h>
 # include <time.h>
 # include <stdio.h>
@@ -111,6 +112,16 @@ typedef struct		s_win
 	int				endian;
 	struct s_color	clr;
 }					t_win;
+
+/*
+** super structure
+*/
+
+typedef struct 		s_super_structure
+{
+	int				xywh[4];
+	s_win			*e;
+}					t_super_structure;
 
 int					ftol_key_hook(int k, t_win *env);
 void				ftol_set_color(int keycode, t_win *env);

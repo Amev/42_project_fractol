@@ -19,7 +19,7 @@ int					ftol_init_env_variables(t_win *env)
 	env->c_im = env->name == THORN ? -0.04 : 0.27015;
 	env->motion = 0;
 	env->event = 0;
-	env->move_x = 0;
+	env->move_x = env->name == MANDEL ? 0.2 : 0;
 	env->move_y = 0;
 	env->iter = env->name == THORN ? 200 : 300;
 	env->esc = env->name == THORN ? 32 : 4;
