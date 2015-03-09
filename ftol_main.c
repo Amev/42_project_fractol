@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:02:11 by vame              #+#    #+#             */
-/*   Updated: 2015/03/08 16:44:43 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 14:41:42 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int					main(int av, char **ac)
 
 	env.mlx = mlx_init();
 	ftol_win_param(&env, av, ac);
-	ftol_set_color(KEYCODE_1, &env);
+	ftol_init_env_variables(&env);
 	env.win = mlx_new_window(env.mlx, env.w, env.h, "fractol");
 	mlx_expose_hook(env.win, ftol_expose_hook, &env);
 	mlx_hook(env.win, 6, 64, ftol_mouse_motion, &env);

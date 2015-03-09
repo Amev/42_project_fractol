@@ -6,29 +6,38 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:29:21 by vame              #+#    #+#             */
-/*   Updated: 2015/03/09 11:47:59 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 15:58:54 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int					ftol_fractal_name(t_win *env, char *ac)
+int					ftol_init_env_variables(t_win *env)
 {
-	env->name = 0;
 	env->zoom = 1;
-	env->c_re = -0.7;
-	env->c_im = 0.27015;
+	env->c_re = env->name == THORN ? 0.102 : -0.7;
+	env->c_im = env->name == THORN ? -0.04 : 0.27015;
 	env->motion = 0;
 	env->event = 0;
 	env->move_x = 0;
 	env->move_y = 0;
-	env->max_iter = 300;
+	env->iter = env->name == THORN ? 200 : 300;
+	env->esc = env->name == THORN ? 32 : 4;
+	ftol_set_color(KEYCODE_1, env);
+	return (1);
+}
+
+int					ftol_fractal_name(t_win *env, char *ac)
+{
+	env->name = 0;
 	if (!ft_strcmp("julia", ac))
 		env->name = JULIA;
 	if (!ft_strcmp("mandel", ac))
 		env->name = MANDEL;
 	if (!ft_strcmp("ship", ac))
 		env->name = SHIP;
+	if (!ft_strcmp("thorn", ac))
+		env->name = THORN;
 	if (env->name == 0)
 		ftol_print_error(ERR_NAM);
 	return (1);

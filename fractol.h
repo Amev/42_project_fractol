@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:03:32 by vame              #+#    #+#             */
-/*   Updated: 2015/03/09 11:57:08 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 15:55:31 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define JULIA 1
 # define MANDEL 2
 # define SHIP 3
+# define THORN 4
 
 # define ERR_ARG 1
 # define ERR_MAL 2
@@ -67,8 +68,9 @@ typedef struct		s_color
 
 typedef struct 		s_complex
 {
+	int				esc;
 	int				name;
-	int				max_iter;
+	int				iter;
 	double			z_re;
 	double			z_im;
 	double			n_re;
@@ -89,10 +91,12 @@ typedef struct		s_win
 {
 	int				w;
 	int				h;
+	int				esc;
 	int				name;
 	int				motion;
+	int				t_const;
 	int				event;
-	int				max_iter;
+	int				iter;
 	double			move_x;
 	double			move_y;
 	double			zoom;
@@ -121,5 +125,6 @@ void				ftol_print_error(int err);
 int					ftol_mouse_hook(int b, int x, int y,  t_win *env);
 int					ftol_mouse_motion(int x, int y, t_win *env);
 int					ftol_loop_hook(t_win *e);
+int					ftol_init_env_variables(t_win *env);
 
 #endif
