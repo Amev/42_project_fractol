@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:17:42 by vame              #+#    #+#             */
-/*   Updated: 2015/03/08 17:04:18 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 11:57:01 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,44 +49,45 @@ void				ftol_set_color(int keycode, t_win *env)
 		ftol_set_color_end(env);
 }
 
+static void			ftol_key_move(int k, t_win *e)
+{
+	double			move;
+
+	if (k == K_LEFT || k == K_RIGHT)
+	{
+		move = k == K_LEFT ? e->w / 2 - e->w / 20 : e->w / 2 + e->w / 20;	
+		e->move_x += 1.5 * (move - e->w / 2) / (0.5 * e->w * e->zoom);
+	}
+	else if (k == K_TOP || k == K_BOT)
+	{
+		move = k == K_TOP ? e->h / 2 - e->h / 20 : e->h / 2 + e->h / 20;	
+		e->move_y += (move - e->h / 2) / (0.5 * e->h * e->zoom);
+	}
+}
+
 int					ftol_key_hook(int k, t_win *env)
 {
 	if (k == 65307)
 		exit(0);
 	else if (k == KEYCODE_1 || k == KEYCODE_2 || k == KEYCODE_3)
 		ftol_set_color(k, env);
-	else if (k == 65453)
-		env->zoom /= 2;
-	else if (k == 65451)
-		env->zoom *= 2;
+	else if (k == 65453 || k == 65451)
+		env->zoom *= k == 65451 ? 2 : 0.5;
+	else if (k == 65293)
+		env->motion = env->motion ? 0 : 1;
+	else if (k == K_LEFT || k == K_TOP || k == K_RIGHT || k == K_BOT)
+		ftol_key_move(k, env);
+	else if (k == 44 || k == 46)
+	{
+		env->max_iter = k == 46 ? env->max_iter + 1 : env->max_iter - 1;
+		env->max_iter = env->max_iter < 1 ? 1 : env->max_iter;
+	}
+	else if (k == 109 || k == 47)
+	{
+		env->max_iter = k == 47 ? env->max_iter * 1.25 : env->max_iter * 0.75;
+		env->max_iter = env->max_iter < 1 ? 1 : env->max_iter;
+	}
 	env->event = 1;
-	return (0);
-}
-
-int					ftol_mouse_motion(int x, int y, t_win *env)
-{
-	if (env->motion && (env->name != MANDEL)
-	{
-		env->c_re = 1.5 * (x - env->w / 2) / (0.5 * env->w * env->zoom);
-		env->c_im = (y - env->h / 2) / (0.5 * env->h * env->zoom);
-		env->event = 1;
-	}
-	else if (env->motion && env->name == MANDEL)
-	{
-		env->coef_x = (x - env->w / 2) / (0.5 * env->w);
-		env->coef_y = (y - env->h / 2) / (0.5 * env->h);
-		env->event = 1;
-	}
-	return (0);
-}
-
-int					ftol_mouse_hook(int b, int x, int y,  t_win *env)
-{
-	(void)env;
-	ft_printf("motion = %d, x = %d, y = %d.\n", env->motion, x , y);
-	if (b == 1 && !env->motion)
-		env->motion = 1;
-	else if (b == 1 && env->motion)
-		env->motion = 0;
+	ft_printf("max_iter = %d.\n", env->max_iter);
 	return (0);
 }

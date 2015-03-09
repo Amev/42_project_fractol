@@ -6,7 +6,7 @@
 /*   By: vame <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/05 17:25:23 by vame              #+#    #+#             */
-/*   Updated: 2015/03/08 13:02:53 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 09:28:05 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void				ft_lstadd_back(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int					ft_abs(int n);
+double				ft_abs_db(double n);
 int					ft_putwchar(wchar_t c);
 int					ft_putwstr(wchar_t *str);
 int					ft_wstrlen(wchar_t *str);

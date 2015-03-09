@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:03:32 by vame              #+#    #+#             */
-/*   Updated: 2015/03/08 16:43:00 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 11:57:08 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 # define ERR_MAL 2
 # define ERR_NAM 3
 
+# define K_LEFT 65361
+# define K_TOP 65362
+# define K_RIGHT 65363
+# define K_BOT 65364
 # define KEYCODE_1 49
 # define KEYCODE_2 50
 # define KEYCODE_3 51
@@ -63,11 +67,14 @@ typedef struct		s_color
 
 typedef struct 		s_complex
 {
-	int				name; 
+	int				name;
+	int				max_iter;
 	double			z_re;
 	double			z_im;
 	double			n_re;
 	double			n_im;
+	double			c_re;
+	double			c_im;
 	double			div_w;
 	double			div_h;
 	double			half_w;
@@ -85,11 +92,12 @@ typedef struct		s_win
 	int				name;
 	int				motion;
 	int				event;
+	int				max_iter;
+	double			move_x;
+	double			move_y;
 	double			zoom;
 	double			c_re;
 	double			c_im;
-	double			coef_x;
-	double			coef_y;
 	void			*mlx;
 	void			*win;
 	void			*img;

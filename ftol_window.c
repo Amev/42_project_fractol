@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:29:21 by vame              #+#    #+#             */
-/*   Updated: 2015/03/08 16:39:57 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 11:47:59 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ int					ftol_fractal_name(t_win *env, char *ac)
 	env->zoom = 1;
 	env->c_re = -0.7;
 	env->c_im = 0.27015;
-	env->coef_x = 1;
-	env->coef_y = 1;
 	env->motion = 0;
 	env->event = 0;
+	env->move_x = 0;
+	env->move_y = 0;
+	env->max_iter = 300;
 	if (!ft_strcmp("julia", ac))
 		env->name = JULIA;
 	if (!ft_strcmp("mandel", ac))

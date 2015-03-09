@@ -6,7 +6,7 @@
 #    By: vame <vame@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/23 11:23:10 by vame              #+#    #+#              #
-#    Updated: 2015/03/08 14:08:08 by vame             ###   ########.fr        #
+#    Updated: 2015/03/09 11:07:02 by vame             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC =	./ftol_main.c \
 		./ftol_tools.c \
 		./ftol_expose.c \
 		./ftol_window.c \
-		./ftol_keyhook.c
+		./ftol_keyhook.c \
+		./ftol_mousehook.c
 
 BINAIRE = $(SRC:.c=.o)
 

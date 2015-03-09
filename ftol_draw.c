@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 12:32:45 by vame              #+#    #+#             */
-/*   Updated: 2015/03/08 17:04:20 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/09 11:57:04 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void				ftol_putinimg(t_win *env, int x, int y, int color)
 
 int					ftol_idxclr(t_win *e, int i)
 {
+	i = i * 300 / e->max_iter;
 	if (i < 26)
 		return (ft_color_degrade(e->clr.color1, e->clr.color2, i * 4));
 	else if (i < 51)
@@ -43,14 +44,19 @@ int					ftol_dwrcrs(t_complex *im, int i)
 {
 	im->z_re = im->n_re;
 	im->z_im = im->n_im;
-	im->n_re = im->z_re * im->z_re - im->z_im * im->z_im + im->c_re;
 	if (im->name == SHIP)
+	{
+		im->n_re = im->z_re * im->z_re - im->z_im * im->z_im - im->c_re;
 		im->n_im = 2 * ft_abs_db(im->z_re * im->z_im) + im->c_im;
+	}
 	else
+	{
+		im->n_re = im->z_re * im->z_re - im->z_im * im->z_im + im->c_re;
 		im->n_im = 2 * im->z_re * im->z_im + im->c_im;
-	if (im->n_re * im->n_re + im->n_im * im->n_im > 4)
+	}
+	if (i >= im->max_iter || im->n_re * im->n_re + im->n_im * im->n_im > 4)
 		return (i);
-	return (ftol_dwrcus(im, i + 1));
+	return (ftol_dwrcrs(im, i + 1));
 }
 
 int					ftol_draw(t_win *e)
@@ -63,6 +69,7 @@ int					ftol_draw(t_win *e)
 	im.name = e->name;
 	im.half_w = e->w / 2;
 	im.half_h = e->h / 2;
+	im.max_iter = e->max_iter;
 	im.div_w = 1.5 / (0.5 * e->w * e->zoom);
 	im.div_h = 1 / (0.5 * e->h * e->zoom);
 	while (y < e->h)
@@ -70,11 +77,12 @@ int					ftol_draw(t_win *e)
 		x = 0;
 		while (x < e->w)
 		{
-			im.n_re = (x - im.half_w) * im.div_w;
-			im.n_im = (y - im.half_h) * im.div_h;
-			im->c_re = e->name == MANDEL ? e->coef_x * im.n_re : e->c_re;
-			im->c_im = e->name == MANDEL ? e->coef_y * im.n_im : e->c_im;
-			ftol_putinimg(e, x++, y, ftol_idxclr(e, ftol_dwrcrs(&im, 0)));
+			im.n_re = (x - im.half_w) * im.div_w + e->move_x;
+			im.n_im = (y - im.half_h) * im.div_h + e->move_y;
+			im.c_re = e->name != JULIA ? im.n_re : e->c_re;
+			im.c_im = e->name != JULIA ? im.n_im : e->c_im;
+			ftol_putinimg(e, x, y, ftol_idxclr(e, ftol_dwrcrs(&im, 0)));
+			x++;
 		}
 		y++;
 	}
