@@ -28,6 +28,7 @@
 # define MANDEL 2
 # define SHIP 3
 # define THORN 4
+# define BUDDHA 5
 
 # define ERR_ARG 1
 # define ERR_MAL 2
@@ -69,9 +70,6 @@ typedef struct		s_color
 
 typedef struct 		s_complex
 {
-	int				esc;
-	int				name;
-	int				iter;
 	double			z_re;
 	double			z_im;
 	double			n_re;
@@ -93,9 +91,12 @@ typedef struct		s_win
 	int				w;
 	int				h;
 	int				esc;
+	int				max;
 	int				name;
 	int				motion;
 	int				t_const;
+	double			**pxl;
+	double			**pxl_tmp;
 	int				event;
 	int				iter;
 	double			move_x;
@@ -130,12 +131,16 @@ int					ftol_win_param(t_win *env, int av, char **ac);
 int					ftol_fractal_name(t_win *env, char *ac);
 int					ftol_draw(t_win *env);
 int					ftol_idxclr(t_win *e, int i);
-int					ftol_dw_rcrs(t_complex *im, int i);
+int					ftol_dw_rcrs(t_complex *im, int i, t_win *e);
 void				ftol_putinimg(t_win *env, int x, int y, int color);
 void				ftol_print_error(int err);
 int					ftol_mouse_hook(int b, int x, int y,  t_win *env);
 int					ftol_mouse_motion(int x, int y, t_win *env);
 int					ftol_loop_hook(t_win *e);
 int					ftol_init_env_variables(t_win *env);
+void				ftol_clean_pxl(int x, int y, int ***pxl);
+double				**ftol_create_pxl(int x, int y);
+void				ftol_buddha(t_win *e);
+void				ftol_init_im(t_complex *im, t_win *e);
 
 #endif

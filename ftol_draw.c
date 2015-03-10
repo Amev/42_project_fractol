@@ -40,16 +40,16 @@ int					ftol_idxclr(t_win *e, int i)
 	return (e->clr.color7);
 }
 
-int					ftol_dwrcrs(t_complex *im, int i)
+int					ftol_dwrcrs(t_complex *im, int i, t_win *e)
 {
 	im->z_re = im->n_re;
 	im->z_im = im->n_im;
-	if (im->name == SHIP)
+	if (e->name == SHIP)
 	{
 		im->n_re = im->z_re * im->z_re - im->z_im * im->z_im - im->c_re;
 		im->n_im = 2 * ft_abs_db(im->z_re * im->z_im) + im->c_im;
 	}
-	else if (im->name == THORN)
+	else if (e->name == THORN)
 	{
 		im->n_re = im->z_re / cos(im->z_im) + im->c_re;
 		im->n_im = im->z_im / sin(im->z_re) + im->c_im;
@@ -59,7 +59,7 @@ int					ftol_dwrcrs(t_complex *im, int i)
 		im->n_re = im->z_re * im->z_re - im->z_im * im->z_im + im->c_re;
 		im->n_im = 2 * im->z_re * im->z_im + im->c_im;
 	}
-	if (i >= im->iter || im->n_re * im->n_re + im->n_im * im->n_im > im->esc)
+	if (i >= e->iter || im->n_re * im->n_re + im->n_im * im->n_im > e->esc)
 		return (i);
 	return (ftol_dwrcrs(im, i + 1));
 }
@@ -71,13 +71,7 @@ void				*ftol_draw_quarter(s_structure s)
 	t_complex		im;
 
 	y = s.xywh[1];
-	im.esc = s.e->esc;
-	im.iter = s.e->iter;
-	im.name = s.e->name;
-	im.half_w = s.e->w / 2;
-	im.half_h = s.e->h / 2;
-	im.div_w = 1.5 / (0.5 * e->w * s.e->zoom);
-	im.div_h = 1 / (0.5 * e->h * s.e->zoom);
+	ftol_init_im(&im, s.e);
 	while (y < s.xywh[3])
 	{
 		x = s.xywh[0];
@@ -87,7 +81,7 @@ void				*ftol_draw_quarter(s_structure s)
 			im.n_im = (y - im.half_h) * im.div_h + s.e->move_y;
 			im.c_re = s.e->name != JULIA && s.e->name != THORN ? im.n_re : s.e->c_re;
 			im.c_im = s.e->name != JULIA && s.e->name != THORN ? im.n_im : s.e->c_im;
-			ftol_putinimg(s.e, x++, y, ftol_idxclr(s.e, ftol_dwrcrs(&im, 0)));
+			ftol_putinimg(s.e, x++, y, ftol_idxclr(s.e, ftol_dwrcrs(&im, 0, s.e)));
 		}
 		y++;
 	}

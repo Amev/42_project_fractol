@@ -14,6 +14,7 @@
 
 int					ftol_init_env_variables(t_win *env)
 {
+	env->max = 0;
 	env->zoom = 1;
 	env->c_re = env->name == THORN ? 0.102 : -0.7;
 	env->c_im = env->name == THORN ? -0.04 : 0.27015;
@@ -23,6 +24,12 @@ int					ftol_init_env_variables(t_win *env)
 	env->move_y = 0;
 	env->iter = env->name == THORN ? 200 : 300;
 	env->esc = env->name == THORN ? 32 : 4;
+	if (env->name == BUDDHA)
+	{
+		env->pxl_tmp; = ftol_create_pxl(env->iter, 2);
+		env->pxl = ftol_create_pxl(env->w, env->h);
+		ftol_clean_pxl(env->w, env->h, &env->pxl);
+	}
 	ftol_set_color(KEYCODE_1, env);
 	return (1);
 }
@@ -32,13 +39,15 @@ int					ftol_fractal_name(t_win *env, char *ac)
 	env->name = 0;
 	if (!ft_strcmp("julia", ac))
 		env->name = JULIA;
-	if (!ft_strcmp("mandel", ac))
+	else if (!ft_strcmp("mandel", ac))
 		env->name = MANDEL;
-	if (!ft_strcmp("ship", ac))
+	else if (!ft_strcmp("ship", ac))
 		env->name = SHIP;
-	if (!ft_strcmp("thorn", ac))
+	else if (!ft_strcmp("thorn", ac))
 		env->name = THORN;
-	if (env->name == 0)
+	else if (!ft_strcmp("buddha", ac))
+		env->name = BUDDHA;
+	else
 		ftol_print_error(ERR_NAM);
 	return (1);
 }

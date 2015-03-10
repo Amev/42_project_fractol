@@ -24,7 +24,10 @@ int					ftol_expose_hook(t_win *e)
 {
 	e->img = mlx_new_image(e->mlx, e->w, e->h);
 	e->img_str = mlx_get_data_addr(e->img, &e->bpp, &e->len, &e->endian);
-	ftol_draw(e);
+	if (e->name == BUDDHA)
+		ftol_buddha(e);
+	else
+		ftol_draw(e);
 	e->event = 0;
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
 	mlx_destroy_image(e->mlx, e->img);
