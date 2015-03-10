@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/09 11:06:00 by vame              #+#    #+#             */
-/*   Updated: 2015/03/09 15:58:01 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/10 10:42:16 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void			ftol_thorn_const(t_win *e, int b)
 
 int					ftol_mouse_hook(int b, int x, int y,  t_win *e)
 {
-	ft_printf("b = %d, x = %d, y = %d.\n", b, x , y);
+	//ft_printf("b = %d, x = %d, y = %d.\n", b, x , y);
 	if (e->name == THORN && (b == 4 || b == 5))
 		ftol_thorn_const(e, b);
 	if (b == 1 || b == 3)

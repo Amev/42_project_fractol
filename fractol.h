@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:03:32 by vame              #+#    #+#             */
-/*   Updated: 2015/03/09 15:55:31 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/10 17:11:05 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@
 # include <time.h>
 # include <stdio.h>
 
-# define JULIA 1
-# define MANDEL 2
-# define SHIP 3
-# define THORN 4
-# define BUDDHA 5
+# define SHIP 1
+# define JULIA 2
+# define THORN 3
+# define MULTI 4
+# define MANDEL 5
 
 # define ERR_ARG 1
 # define ERR_MAL 2
 # define ERR_NAM 3
+# define ERR_THD 4
 
 # define K_LEFT 65361
 # define K_TOP 65362
@@ -95,8 +96,6 @@ typedef struct		s_win
 	int				name;
 	int				motion;
 	int				t_const;
-	double			**pxl;
-	double			**pxl_tmp;
 	int				event;
 	int				iter;
 	double			move_x;
@@ -118,13 +117,13 @@ typedef struct		s_win
 ** super structure
 */
 
-typedef struct 		s_super_structure
+typedef struct 		s_super_struct
 {
 	int				xywh[4];
-	s_win			*e;
-}					t_super_structure;
+	struct s_win	*e;
+}					t_super_struct;
 
-int					ftol_key_hook(int k, t_win *env);
+int					ftol_key_hook(int k, t_win *e);
 void				ftol_set_color(int keycode, t_win *env);
 int					ftol_expose_hook(t_win *e);
 int					ftol_win_param(t_win *env, int av, char **ac);
@@ -138,9 +137,6 @@ int					ftol_mouse_hook(int b, int x, int y,  t_win *env);
 int					ftol_mouse_motion(int x, int y, t_win *env);
 int					ftol_loop_hook(t_win *e);
 int					ftol_init_env_variables(t_win *env);
-void				ftol_clean_pxl(int x, int y, int ***pxl);
-double				**ftol_create_pxl(int x, int y);
-void				ftol_buddha(t_win *e);
 void				ftol_init_im(t_complex *im, t_win *e);
 
 #endif

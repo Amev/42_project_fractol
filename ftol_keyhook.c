@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:17:42 by vame              #+#    #+#             */
-/*   Updated: 2015/03/09 16:57:45 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/10 16:00:34 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,30 @@ static void			ftol_key_move(int k, t_win *e)
 	}
 }
 
-int					ftol_key_hook(int k, t_win *env)
+int					ftol_key_hook(int k, t_win *e)
 {
 	if (k == 65307)
 		exit(0);
 	else if (k == KEYCODE_1 || k == KEYCODE_2 || k == KEYCODE_3)
-		ftol_set_color(k, env);
+		ftol_set_color(k, e);
 	else if (k == 65453 || k == 65451)
-		env->zoom *= k == 65451 ? 2 : 0.5;
+		e->zoom *= k == 65451 ? 2 : 0.5;
 	else if (k == 65293)
-		env->motion = env->motion ? 0 : 1;
+		e->motion = e->motion ? 0 : 1;
 	else if (k == K_LEFT || k == K_TOP || k == K_RIGHT || k == K_BOT)
-		ftol_key_move(k, env);
+		ftol_key_move(k, e);
 	else if (k == 44 || k == 46)
-		env->iter = ft_max(1, k == 46 ? env->iter + 1 : env->iter - 1);
+		e->iter = ft_min(5000, ft_max(1, k == 46 ? e->iter + 1 : e->iter - 1));
 	else if (k == 109 || k == 47)
-		env->iter = ft_max(1, k == 47 ? env->iter * 1.25 : env->iter * 0.75);
+	{
+		e->iter = ft_max(1, k == 47 ? e->iter * 1.25 : e->iter * 0.75);
+		e->iter = ft_min(5000, e->iter);
+	}
 	else if (k == 45 || k == 61)
-		env->esc = ft_max(4, k == 61 ? env->esc * 2 : env->esc * 0.5);
+		e->esc = ft_max(4, k == 61 ? e->esc * 2 : e->esc * 0.5);
 	else if (k == 65288)
-		ftol_init_env_variables(env);
-	env->event = 1;
-	//ft_printf("esc = %d | iter = %d.\n", env->esc, env->iter);
+		ftol_init_env_variables(e);
+	e->event = 1;
+	//ft_printf("esc = %d | iter = %d.\n", e->esc, e->iter);
 	return (0);
 }

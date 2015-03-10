@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:29:21 by vame              #+#    #+#             */
-/*   Updated: 2015/03/09 15:58:54 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/10 17:11:03 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,16 @@
 int					ftol_init_env_variables(t_win *env)
 {
 	env->max = 0;
-	env->zoom = 1;
+	env->zoom = 0.75;
 	env->c_re = env->name == THORN ? 0.102 : -0.7;
 	env->c_im = env->name == THORN ? -0.04 : 0.27015;
 	env->motion = 0;
 	env->event = 0;
-	env->move_x = env->name == MANDEL ? 0.2 : 0;
-	env->move_y = 0;
+	env->move_x = env->name == MANDEL ? -0.5 : 0;
+	env->move_x = env->name == SHIP ? 0.25 : env->move_x;
+	env->move_y = env->name == SHIP ? -0.25 : 0;
 	env->iter = env->name == THORN ? 200 : 300;
 	env->esc = env->name == THORN ? 32 : 4;
-	if (env->name == BUDDHA)
-	{
-		env->pxl_tmp; = ftol_create_pxl(env->iter, 2);
-		env->pxl = ftol_create_pxl(env->w, env->h);
-		ftol_clean_pxl(env->w, env->h, &env->pxl);
-	}
 	ftol_set_color(KEYCODE_1, env);
 	return (1);
 }
@@ -45,8 +40,8 @@ int					ftol_fractal_name(t_win *env, char *ac)
 		env->name = SHIP;
 	else if (!ft_strcmp("thorn", ac))
 		env->name = THORN;
-	else if (!ft_strcmp("buddha", ac))
-		env->name = BUDDHA;
+	else if (!ft_strcmp("multi", ac))
+		env->name = MULTI;
 	else
 		ftol_print_error(ERR_NAM);
 	return (1);

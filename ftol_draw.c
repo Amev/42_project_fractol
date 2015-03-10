@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 12:32:45 by vame              #+#    #+#             */
-/*   Updated: 2015/03/09 15:17:10 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/10 17:11:02 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int					ftol_idxclr(t_win *e, int i)
 
 int					ftol_dwrcrs(t_complex *im, int i, t_win *e)
 {
+	double			tmp;
+
 	im->z_re = im->n_re;
 	im->z_im = im->n_im;
 	if (e->name == SHIP)
@@ -54,6 +56,13 @@ int					ftol_dwrcrs(t_complex *im, int i, t_win *e)
 		im->n_re = im->z_re / cos(im->z_im) + im->c_re;
 		im->n_im = im->z_im / sin(im->z_re) + im->c_im;
 	}
+	else if (e->name == MULTI)
+	{
+		tmp = pow(im->z_re * im->z_re - im->z_im * im->z_im, 2);
+		tmp += 4 * im->z_re * im->z_re * im->z_im * im->z_im;
+		im->n_re = (im->z_re * im->z_re - im->z_im * im->z_im) / tmp + im->c_re;
+		im->n_im = -2 * im->z_im * im->z_re / tmp + im->c_im;
+	}
 	else
 	{
 		im->n_re = im->z_re * im->z_re - im->z_im * im->z_im + im->c_re;
@@ -61,27 +70,31 @@ int					ftol_dwrcrs(t_complex *im, int i, t_win *e)
 	}
 	if (i >= e->iter || im->n_re * im->n_re + im->n_im * im->n_im > e->esc)
 		return (i);
-	return (ftol_dwrcrs(im, i + 1));
+	return (ftol_dwrcrs(im, i + 1, e));
 }
 
-void				*ftol_draw_quarter(s_structure s)
+static void			*ftol_d_q(void *param)
 {
 	int				x;
 	int				y;
+	t_super_struct	*s;
+	t_win			*e;
 	t_complex		im;
 
-	y = s.xywh[1];
-	ftol_init_im(&im, s.e);
-	while (y < s.xywh[3])
+	s = (struct s_super_struct *)param;
+	e = s->e;
+	y = s->xywh[1];
+	ftol_init_im(&im, e);
+	while (y < s->xywh[3])
 	{
-		x = s.xywh[0];
-		while (x < s.xywh[2])
+		x = s->xywh[0];
+		while (x < s->xywh[2])
 		{
-			im.n_re = (x - im.half_w) * im.div_w + s.e->move_x;
-			im.n_im = (y - im.half_h) * im.div_h + s.e->move_y;
-			im.c_re = s.e->name != JULIA && s.e->name != THORN ? im.n_re : s.e->c_re;
-			im.c_im = s.e->name != JULIA && s.e->name != THORN ? im.n_im : s.e->c_im;
-			ftol_putinimg(s.e, x++, y, ftol_idxclr(s.e, ftol_dwrcrs(&im, 0, s.e)));
+			im.n_re = (x - im.half_w) * im.div_w + e->move_x;
+			im.n_im = (y - im.half_h) * im.div_h + e->move_y;
+			im.c_re = e->name != JULIA && e->name != THORN ? im.n_re : e->c_re;
+			im.c_im = e->name != JULIA && e->name != THORN ? im.n_im : e->c_im;
+			ftol_putinimg(e, x++, y, ftol_idxclr(e, ftol_dwrcrs(&im, 0, e)));
 		}
 		y++;
 	}
@@ -91,26 +104,24 @@ void				*ftol_draw_quarter(s_structure s)
 int					ftol_draw(t_win *e)
 {
 	int				i;
-	int				rturn[4];
-	pthread_t		thread[4];
-	t_super_struct	s_structure;
+	t_super_struct	s[8];
+	pthread_t		thread[8];
 
 	i = 0;
-	s_structure.e = e;
-	while (i < 4)
+	while (i < 8)
 	{
-		s_structure.xywh[0] = (i + 1) / 2 * (e->w / 2);
-		s_structure.xywh[1] = i % 2 * (e->h / 2);
-		s_structure.xywh[2] = (1 + (i / 2)) * (e->w / 2);
-		s_structure.xywh[3] = (1 + (i % 2)) * (e->h / 2);
-		if (pthread_create(&thread[i++], NULL, ftol_draw_quarter, s_structure) == -1)
+		s[i].e = e;
+		s[i].xywh[0] = (i % 4) * e->w / 4;
+		s[i].xywh[1] = i / 4 * e->h / 2;
+		s[i].xywh[2] = e->w / 4 + (i % 4) * e->w / 4;
+		s[i].xywh[3] = e->h / 2 + (i / 4) * e->h / 2;
+		if (pthread_create(&thread[i], NULL, &ftol_d_q, (void *)&s[i]) == -1)
 			ftol_print_error(ERR_THD);
+		i++;
 	}
-	rturn[0] = pthread_join(thread[0], NULL);
-	rturn[1] = pthread_join(thread[1], NULL);
-	rturn[2] = pthread_join(thread[2], NULL);
-	rturn[3] = pthread_join(thread[3], NULL);
-	if (rturn[0] == -1 || rturn[1] == -1 || rturn[2] == -1 || rturn[3] == -1)
-		ftol_print_error(ERR_THD);
+	i = 0;
+	while (i < 8)
+		if (pthread_join(thread[i++], NULL) == -1)
+			ftol_print_error(ERR_THD);
 	return (1);
 }
