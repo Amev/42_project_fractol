@@ -12,35 +12,7 @@
 
 #include "fractol.h"
 
-void				ftol_putinimg(t_win *e, int x, int y, int color)
-{
-	int				i;
-
-	i = x * 4 + y * e->len;
-	e->img_str[i] = (color & 0xFF);
-	e->img_str[i + 1] = (color & 0xFF00) >> 8;
-	e->img_str[i + 2] = (color & 0xFF0000) >> 16;
-}
-
-int					ftol_idxclr(t_win *e, int i)
-{
-	i = i * 300 / e->iter;
-	if (i < 26)
-		return (ft_color_degrade(e->clr.color1, e->clr.color2, i * 4));
-	else if (i < 51)
-		return (ft_color_degrade(e->clr.color2, e->clr.color3, (i - 25) * 4));
-	else if (i < 76)
-		return (ft_color_degrade(e->clr.color3, e->clr.color4, (i - 50) * 4));
-	else if (i < 101)
-		return (ft_color_degrade(e->clr.color4, e->clr.color5, (i - 75) * 4));
-	else if (i < 201)
-		return (ft_color_degrade(e->clr.color5, e->clr.color6, (i - 100)));
-	else if (i < 301)
-		return (ft_color_degrade(e->clr.color6, e->clr.color7, (i - 200)));
-	return (e->clr.color7);
-}
-
-int					ftol_dwrcrs(t_complex *im, int i, t_win *e)
+static int			ftol_dwrcrs(t_complex *im, int i, t_win *e)
 {
 	double			tmp;
 
@@ -104,13 +76,13 @@ static void			*ftol_d_q(void *param)
 int					ftol_draw(t_win *e)
 {
 	int				i;
-	t_super_struct	s[8];
 	pthread_t		thread[8];
 
+	t_super_struct	s[8];
 	i = 0;
-	while (i < 8)
 	{
 		s[i].e = e;
+	while (i < 8)
 		s[i].xywh[0] = (i % 4) * e->w / 4;
 		s[i].xywh[1] = i / 4 * e->h / 2;
 		s[i].xywh[2] = e->w / 4 + (i % 4) * e->w / 4;

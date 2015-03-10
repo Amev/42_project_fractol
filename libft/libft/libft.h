@@ -28,7 +28,7 @@ double				ft_max_db(double a, double b);
 double				ft_min_db(double a, double b);
 int					ft_max(int a, int b);
 int					ft_min(int a, int b);
-int					ft_color_degrade(int clr_a, int clr_b, int index);
+int					ft_color_degrade(int clr_a, int clr_b, double index);
 void				ft_putchar(char c);
 void				ft_putstr(char const *s);
 void				*ft_memset(void *b, int c, size_t len);

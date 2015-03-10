@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int			ft_color_degrade_r(int clr_a, int clr_b, int index)
+static int			ft_color_degrade_r(int clr_a, int clr_b, double index)
 {
 	int				r_a;
 	int				r_b;
@@ -25,7 +25,7 @@ static int			ft_color_degrade_r(int clr_a, int clr_b, int index)
 	return (mask);
 }
 
-static int			ft_color_degrade_g(int clr_a, int clr_b, int index)
+static int			ft_color_degrade_g(int clr_a, int clr_b, double index)
 {
 	int				g_a;
 	int				g_b;
@@ -38,7 +38,7 @@ static int			ft_color_degrade_g(int clr_a, int clr_b, int index)
 	return (mask);
 }
 
-static int			ft_color_degrade_b(int clr_a, int clr_b, int index)
+static int			ft_color_degrade_b(int clr_a, int clr_b, double index)
 {
 	int				b_a;
 	int				b_b;
@@ -50,7 +50,7 @@ static int			ft_color_degrade_b(int clr_a, int clr_b, int index)
 	return (b_a + ((b_b - b_a) * index / 100));
 }
 
-int					ft_color_degrade(int clr_a, int clr_b, int index)
+int					ft_color_degrade(int clr_a, int clr_b, double index)
 {
 	int				r;
 	int				g;

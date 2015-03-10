@@ -40,3 +40,33 @@ void				ftol_init_im(t_complex *im, t_win *e)
 	im->div_w = 1.5 / (0.5 * e->w * e->zoom);
 	im->div_h = 1 / (0.5 * e->h * e->zoom);
 }
+
+void				ftol_putinimg(t_win *e, int x, int y, int color)
+{
+	int				i;
+
+	i = x * 4 + y * e->len;
+	e->img_str[i] = (color & 0xFF);
+	e->img_str[i + 1] = (color & 0xFF00) >> 8;
+	e->img_str[i + 2] = (color & 0xFF0000) >> 16;
+}
+
+int					ftol_idxclr(t_win *e, int i)
+{
+	double			j;
+
+	j = i / e->iter;
+	if (j < 5)
+		return (ft_color_degrade(e->clr.color1, e->clr.color2, j * 20));
+	else if (j < 10)
+		return (ft_color_degrade(e->clr.color2, e->clr.color3, (j - 5) * 10));
+	else if (j < 25)
+		return (ft_color_degrade(e->clr.color3, e->clr.color4, (j - 10) * 4));
+	else if (j < 50)
+		return (ft_color_degrade(e->clr.color4, e->clr.color5, (j - 25) * 4));
+	else if (j < 75)
+		return (ft_color_degrade(e->clr.color5, e->clr.color6, (j - 50) * 4));
+	else if (j <= 100)
+		return (ft_color_degrade(e->clr.color6, e->clr.color7, (j - 75) * 4));
+	return (e->clr.color7);
+}
