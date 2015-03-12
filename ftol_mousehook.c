@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/09 11:06:00 by vame              #+#    #+#             */
-/*   Updated: 2015/03/10 10:42:16 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/12 13:53:12 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int					ftol_mouse_motion(int x, int y, t_win *env)
 {
-	if (env->motion && env->name == JULIA)
+	if (env->motion && (env->name == JULIA || env->name == THORN))
 	{
 		env->c_re = 1.5 * (x - env->w / 2) / (0.5 * env->w * env->zoom);
 		env->c_im = (y - env->h / 2) / (0.5 * env->h * env->zoom);
@@ -23,51 +23,34 @@ int					ftol_mouse_motion(int x, int y, t_win *env)
 	return (0);
 }
 
-static void			ftol_thorn_const_end(t_win *e)
+static int			ftol_rand_color(void)
 {
-	if (e->t_const == 3)
-	{
-		e->c_re = 0.662;
-		e->c_im = 1.086;
-	}
-	else if (e->t_const == 4)
-	{
-		e->c_re = -0.354;
-		e->c_im = 0.162;
-	}
+	int				r;
+	int				g;
+	int				b;
+
+	r = (rand() % 256) << 16;
+	g = (rand() % 256) << 8;
+	b = rand() % 256;
+	return ((r | g) | b);
 }
 
-static void			ftol_thorn_const(t_win *e, int b)
+static void			ftol_change_color(t_win *env)
 {
-	if (b == 5)
-		e->t_const = (e->t_const + 1) % 5;
-	else
-		e->t_const = e->t_const == 0 ? 5 : e->t_const - 1;
-	if (e->t_const == 0)
-	{
-		e->c_re = 0.102;
-		e->c_im = -0.04;
-	}
-	else if (e->t_const == 1)
-	{
-		e->c_re = 1.098;
-		e->c_im = 1.402;
-	}
-	else if (e->t_const == 2)
-	{
-		e->c_re = 9.984;
-		e->c_im = 7.550;
-	}
-	else
-		ftol_thorn_const_end(e);
-	e->event = 1;
+	env->clr.color1 = ftol_rand_color();
+	env->clr.color2 = ftol_rand_color();
+	env->clr.color3 = ftol_rand_color();
+	env->clr.color4 = ftol_rand_color();
+	env->clr.color5 = ftol_rand_color();
+	env->clr.color6 = ftol_rand_color();
+	env->clr.color7 = ftol_rand_color();
+	env->event = 1;
 }
 
-int					ftol_mouse_hook(int b, int x, int y,  t_win *e)
+int					ftol_mouse_hook(int b, int x, int y, t_win *e)
 {
-	//ft_printf("b = %d, x = %d, y = %d.\n", b, x , y);
-	if (e->name == THORN && (b == 4 || b == 5))
-		ftol_thorn_const(e, b);
+	if (e->rand && (b == 4 || b == 5))
+		ftol_change_color(e);
 	if (b == 1 || b == 3)
 	{
 		e->move_x += 1.5 * (x - e->w / 2) / (0.5 * e->w * e->zoom);

@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 10:13:11 by vame              #+#    #+#             */
-/*   Updated: 2015/03/08 13:02:36 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/12 13:50:13 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int			ft_color_degrade_r(int clr_a, int clr_b, double index)
 	mask = 255 << 16;
 	r_a = (clr_a & mask) >> 16;
 	r_b = (clr_b & mask) >> 16;
-	mask = (r_a + ((r_b - r_a) * index / 100)) << 16;
+	mask = (r_a + ((r_b - r_a) * index / 100));
+	mask = mask << 16;
 	return (mask);
 }
 
@@ -34,7 +35,8 @@ static int			ft_color_degrade_g(int clr_a, int clr_b, double index)
 	mask = 255 << 8;
 	g_a = (clr_a & mask) >> 8;
 	g_b = (clr_b & mask) >> 8;
-	mask = (g_a + ((g_b - g_a) * index / 100)) << 8;
+	mask = (g_a + ((g_b - g_a) * index / 100));
+	mask = mask << 8;
 	return (mask);
 }
 

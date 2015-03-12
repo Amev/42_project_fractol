@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 13:17:11 by vame              #+#    #+#             */
-/*   Updated: 2015/03/10 13:07:39 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/12 15:38:33 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,18 @@ void				ftol_print_error(int err)
 	if (err == ERR_ARG)
 	{
 		ft_printf("{red}Bad number of arguments.\n");
-		ft_printf("Correct usage is : ");
-		ft_printf("\"./fractol {name} (opt)width (opt)high\".{eoc}\n");
+		ft_printf("{wht}Correct usage is : ");
+		ft_printf("\"{grn}./fractol {name} (opt)width (opt)high{wht}\".\n");
+		ft_printf("Please specify a name betwen : {grn}{julia");
+		ft_printf("/mandel/ship/thorn/multi}{wht}.{eoc}\n");
 	}
 	else if (err == ERR_MAL)
 		ft_printf("{red}Malloc error.{eoc}\n");
 	else if (err == ERR_NAM)
 	{
 		ft_printf("{red}Bad fractal's name.\n");
-		ft_printf("Please specify a name betwen : {\"julia\"");
-		ft_printf("/\"mandel\"/\"ship\"/\"thorn\"}.{eoc}\n");
+		ft_printf("{wht}Please specify a name betwen : {grn}{julia");
+		ft_printf("/mandel/ship/thorn/multi}{wht}.{eoc}\n");
 	}
 	else if (err == ERR_THD)
 		ft_printf("{red}Thread error.{eoc}\n");
@@ -51,11 +53,11 @@ void				ftol_putinimg(t_win *e, int x, int y, int color)
 	e->img_str[i + 2] = (color & 0xFF0000) >> 16;
 }
 
-int					ftol_idxclr(t_win *e, int i)
+int					ftol_idxclr(t_win *e, double i)
 {
 	double			j;
 
-	j = i / e->iter;
+	j = i * 100 / e->iter;
 	if (j < 5)
 		return (ft_color_degrade(e->clr.color1, e->clr.color2, j * 20));
 	else if (j < 10)

@@ -6,18 +6,16 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 12:32:45 by vame              #+#    #+#             */
-/*   Updated: 2015/03/10 17:11:02 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/12 13:54:09 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static int			ftol_dwrcrs(t_complex *im, int i, t_win *e)
+static void			ftol_fractal_algo(t_complex *im, t_win *e)
 {
 	double			tmp;
 
-	im->z_re = im->n_re;
-	im->z_im = im->n_im;
 	if (e->name == SHIP)
 	{
 		im->n_re = im->z_re * im->z_re - im->z_im * im->z_im - im->c_re;
@@ -35,6 +33,14 @@ static int			ftol_dwrcrs(t_complex *im, int i, t_win *e)
 		im->n_re = (im->z_re * im->z_re - im->z_im * im->z_im) / tmp + im->c_re;
 		im->n_im = -2 * im->z_im * im->z_re / tmp + im->c_im;
 	}
+}
+
+static int			ftol_dwrcrs(t_complex *im, double i, t_win *e)
+{
+	im->z_re = im->n_re;
+	im->z_im = im->n_im;
+	if (e->name == SHIP || e->name == THORN || e->name == MULTI)
+		ftol_fractal_algo(im, e);
 	else
 	{
 		im->n_re = im->z_re * im->z_re - im->z_im * im->z_im + im->c_re;
@@ -77,12 +83,12 @@ int					ftol_draw(t_win *e)
 {
 	int				i;
 	pthread_t		thread[8];
-
 	t_super_struct	s[8];
+
 	i = 0;
+	while (i < 8)
 	{
 		s[i].e = e;
-	while (i < 8)
 		s[i].xywh[0] = (i % 4) * e->w / 4;
 		s[i].xywh[1] = i / 4 * e->h / 2;
 		s[i].xywh[2] = e->w / 4 + (i % 4) * e->w / 4;

@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:03:32 by vame              #+#    #+#             */
-/*   Updated: 2015/03/10 17:11:05 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/12 13:54:32 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct		s_color
 ** structure comlexe
 */
 
-typedef struct 		s_complex
+typedef struct		s_complex
 {
 	double			z_re;
 	double			z_im;
@@ -93,6 +93,7 @@ typedef struct		s_win
 	int				h;
 	int				esc;
 	int				max;
+	int				rand;
 	int				name;
 	int				motion;
 	int				t_const;
@@ -117,7 +118,7 @@ typedef struct		s_win
 ** super structure
 */
 
-typedef struct 		s_super_struct
+typedef struct		s_super_struct
 {
 	int				xywh[4];
 	struct s_win	*e;
@@ -127,16 +128,15 @@ int					ftol_key_hook(int k, t_win *e);
 void				ftol_set_color(int keycode, t_win *env);
 int					ftol_expose_hook(t_win *e);
 int					ftol_win_param(t_win *env, int av, char **ac);
-int					ftol_fractal_name(t_win *env, char *ac);
 int					ftol_draw(t_win *env);
-int					ftol_idxclr(t_win *e, int i);
-int					ftol_dw_rcrs(t_complex *im, int i, t_win *e);
+int					ftol_idxclr(t_win *e, double i);
 void				ftol_putinimg(t_win *env, int x, int y, int color);
 void				ftol_print_error(int err);
-int					ftol_mouse_hook(int b, int x, int y,  t_win *env);
+int					ftol_mouse_hook(int b, int x, int y, t_win *env);
 int					ftol_mouse_motion(int x, int y, t_win *env);
 int					ftol_loop_hook(t_win *e);
 int					ftol_init_env_variables(t_win *env);
 void				ftol_init_im(t_complex *im, t_win *e);
+void				ftol_print_menu(t_win *env, char *ac);
 
 #endif

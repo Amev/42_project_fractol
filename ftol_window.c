@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:29:21 by vame              #+#    #+#             */
-/*   Updated: 2015/03/10 17:11:03 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/12 13:51:19 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,24 @@
 int					ftol_init_env_variables(t_win *env)
 {
 	env->max = 0;
-	env->zoom = 0.75;
+	env->rand = 0;
+	env->event = 0;
+	env->motion = 0;
+	env->zoom = env->name == JULIA ? 0.9 : 0.5;
 	env->c_re = env->name == THORN ? 0.102 : -0.7;
 	env->c_im = env->name == THORN ? -0.04 : 0.27015;
-	env->motion = 0;
-	env->event = 0;
 	env->move_x = env->name == MANDEL ? -0.5 : 0;
 	env->move_x = env->name == SHIP ? 0.25 : env->move_x;
 	env->move_y = env->name == SHIP ? -0.25 : 0;
 	env->iter = env->name == THORN ? 200 : 300;
+	env->iter = env->name == MULTI ? 150 : env->iter;
 	env->esc = env->name == THORN ? 32 : 4;
+	env->esc = env->name == MULTI ? 8 : env->esc;
 	ftol_set_color(KEYCODE_1, env);
 	return (1);
 }
 
-int					ftol_fractal_name(t_win *env, char *ac)
+static int			ftol_fractal_name(t_win *env, char *ac)
 {
 	env->name = 0;
 	if (!ft_strcmp("julia", ac))

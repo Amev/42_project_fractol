@@ -6,7 +6,7 @@
 /*   By: vame <vame@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/08 11:17:42 by vame              #+#    #+#             */
-/*   Updated: 2015/03/10 16:00:34 by vame             ###   ########.fr       */
+/*   Updated: 2015/03/12 13:52:09 by vame             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void				ftol_set_color(int keycode, t_win *env)
 	}
 	else if (keycode == KEYCODE_2)
 	{
-		env->clr.color1 = 0x0000FF;
-		env->clr.color2 = 0x00FFFF;
-		env->clr.color3 = 0x00FF00;
-		env->clr.color4 = 0xFBFF00;
-		env->clr.color5 = 0xFF671E;
-		env->clr.color6 = 0xFF0000;
+		env->clr.color6 = 0x70FFFE;
+		env->clr.color2 = 0xF1D451;
+		env->clr.color3 = 0xE09919;
+		env->clr.color4 = 0xFF0000;
+		env->clr.color5 = 0x8A0AF3;
+		env->clr.color1 = 0x67FE65;
 		env->clr.color7 = 0x000000;
 	}
 	else if (keycode == KEYCODE_3)
@@ -55,12 +55,12 @@ static void			ftol_key_move(int k, t_win *e)
 
 	if (k == K_LEFT || k == K_RIGHT)
 	{
-		move = k == K_LEFT ? e->w / 2 - e->w / 20 : e->w / 2 + e->w / 20;	
+		move = k == K_LEFT ? e->w / 2 - e->w / 20 : e->w / 2 + e->w / 20;
 		e->move_x += 1.5 * (move - e->w / 2) / (0.5 * e->w * e->zoom);
 	}
 	else if (k == K_TOP || k == K_BOT)
 	{
-		move = k == K_TOP ? e->h / 2 - e->h / 20 : e->h / 2 + e->h / 20;	
+		move = k == K_TOP ? e->h / 2 - e->h / 20 : e->h / 2 + e->h / 20;
 		e->move_y += (move - e->h / 2) / (0.5 * e->h * e->zoom);
 	}
 }
@@ -88,7 +88,8 @@ int					ftol_key_hook(int k, t_win *e)
 		e->esc = ft_max(4, k == 61 ? e->esc * 2 : e->esc * 0.5);
 	else if (k == 65288)
 		ftol_init_env_variables(e);
+	else if (k == 32)
+		e->rand = e->rand ? 0 : 1;
 	e->event = 1;
-	//ft_printf("esc = %d | iter = %d.\n", e->esc, e->iter);
 	return (0);
 }
