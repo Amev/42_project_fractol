@@ -19,6 +19,7 @@ int					main(int av, char **ac)
 	env.mlx = mlx_init();
 	ftol_win_param(&env, av, ac);
 	ftol_init_env_variables(&env);
+	ftol_print_menu(&env);
 	env.win = mlx_new_window(env.mlx, env.w, env.h, "fractol");
 	mlx_expose_hook(env.win, ftol_expose_hook, &env);
 	mlx_hook(env.win, 6, 64, ftol_mouse_motion, &env);

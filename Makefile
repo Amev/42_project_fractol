@@ -22,6 +22,7 @@ TMP = $(INC:.h=.h.gch)
 
 SRC =	./ftol_main.c \
 		./ftol_draw.c \
+		./ftol_menu.c \
 		./ftol_tools.c \
 		./ftol_expose.c \
 		./ftol_window.c \
